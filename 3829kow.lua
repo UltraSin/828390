@@ -154,12 +154,15 @@ chipBar.ZIndex = 0
 chipBar.Parent = backBar
 local healthBar = Instance.new("Frame")
 healthBar.Size = UDim2.new(0, 0, 1, 0)
-healthBar.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+healthBar.BackgroundColor3 = _immortalMode and Color3.fromRGB(140, 0, 255) or Color3.fromRGB(255, 0, 0)
 healthBar.BorderSizePixel = 0
 healthBar.ZIndex = 1
 healthBar.Parent = backBar
 local gradient = Instance.new("UIGradient")
-gradient.Color = ColorSequence.new{
+gradient.Color = _immortalMode and ColorSequence.new{
+ColorSequenceKeypoint.new(0, Color3.fromRGB(160, 0, 255)),
+ColorSequenceKeypoint.new(1, Color3.fromRGB(100, 0, 200))
+} or ColorSequence.new{
 ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 0)),
 ColorSequenceKeypoint.new(1, Color3.fromRGB(200, 0, 0))
 }
@@ -2328,7 +2331,7 @@ local TweenService = game:GetService("TweenService")
 local AP2 = CreateGui{
 Type = "Frame",
 Name = "Frame2",
-Size = {240, 90},
+Size = {240, 135},
 Pos = {0, 0},
 BackgroundColor = {0, 0, 0},
 Parent = GuiA
@@ -2371,8 +2374,8 @@ ATransition.AnchorPoint = Vector2.new(0.5, 0.5)
 local ATransition2 = CreateGui{
 Type = "Frame",
 Name = "Frame2Fade",
-Size = {250, 125},
-Pos = {120, 60},
+Size = {250, 140},
+Pos = {120, 67},
 BackgroundColor = {0, 0, 0},
 Transparency = 0,
 Parent = AP2
@@ -2390,6 +2393,7 @@ sound:Destroy()
 end)
 end
 
+_immortalMode = false
 function OpenIntro(status)
 if status == true then
 AP2.Visible = true
@@ -2456,6 +2460,17 @@ BackgroundColor = {0, 0, 0},
 Parent = AP2
 }
 
+local ImmortalBtn = CreateGui{
+Type = "TextButton",
+Name = "Frame2",
+Size = {210, 30},
+Pos = {15, 90},
+Text = "IMMORTAL MODE",
+TextSize = 11,
+BackgroundColor = {80, 0, 120},
+Parent = AP2
+}
+
 GuiProp(true, true, 0)(AP2)
 GuiProp(true, false, 0)(AP3)
 GuiProp(false, false, 0)(AP4)
@@ -2463,6 +2478,7 @@ GuiProp(true, false, 11)(ATransition)
 GuiProp(true, false, 10)(ATransition2)
 GuiProp(true, true, 5)(B)
 GuiProp(true, true, 5)(C)
+GuiProp(true, true, 5)(ImmortalBtn)
 
 B.MouseButton1Click:Connect(function()
 ToggleWalkAnim(true)
@@ -2508,7 +2524,32 @@ coroutine.wrap(TextBHide)()
 OpenIntro(false)
 MinosPrimeIntroWoo()
 end)
-  
+
+ImmortalBtn.MouseButton1Click:Connect(function()
+_immortalMode = true
+ToggleWalkAnim(true)
+coroutine.wrap(DestroyItMan)()
+CreateTrueGui()
+coroutine.wrap(Morph)()
+coroutine.wrap(VFXAudioRemover)()
+coroutine.wrap(SpawnSafeBS)()
+ActUseless(true)
+ActMinosPrimeM(true)
+coroutine.wrap(TextBHide)()
+OpenIntro(false)
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(0,0,0)
+coroutine.wrap(StartHitbox)()
+ActHitbox(true)
+PlayS(139270438752699, 2.5)
+hpbar = CreateHPBar()
+function ActHpChange(amount)
+if hpbar and not _immortalMode then
+hpbar.ChangeHealth(amount)
+end
+end
+Immunity(true)
+end)
+
 function SpawnSafeBS()
 local cooldowns = {}
 local part = Instance.new("Part")
@@ -2980,6 +3021,29 @@ return Remotes[glove.Value]
 end
 return Remotes["Default"]
 end
+local function SpawnAfterImage()
+local player = game.Players.LocalPlayer
+local character = player.Character
+if not character then return end
+local hrp = character:FindFirstChild("HumanoidRootPart")
+if not hrp then return end
+for _, part in ipairs(character:GetDescendants()) do
+if part:IsA("BasePart") and part ~= hrp then
+local ghost = Instance.new("Part")
+ghost.Size = part.Size
+ghost.CFrame = part.CFrame
+ghost.Anchored = true
+ghost.CanCollide = false
+ghost.CastShadow = false
+ghost.Color = Color3.fromRGB(200, 200, 255)
+ghost.Material = Enum.Material.Neon
+ghost.Transparency = 0.3
+ghost.Parent = workspace
+game:GetService("Debris"):AddItem(ghost, 0.08)
+end
+end
+end
+
 local function CreateHitbox(size, offset, duration)
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
@@ -3495,7 +3559,9 @@ coroutine.wrap(OverheadAnim)()
 coroutine.wrap(BlueFlash)()
 coroutine.wrap(OverheadSfx)()
 wait(0.1)
+coroutine.wrap(SpawnAfterImage)()
 CreateHitbox(Vector3.new(26, 38, 38), Vector3.new(0, -2, -4), 0.4)
+task.delay(0.01, function() coroutine.wrap(SpawnAfterImage)() end)
 task.delay(0.3, function() CreateHitbox(Vector3.new(26, 38, 38), Vector3.new(0, -2, -4), 0.4) end)
 coroutine.wrap(OverheadTrail)()
 wait(0.5)
@@ -3744,7 +3810,9 @@ end)
 end
 coroutine.wrap(FloatAndLookUp)()
 wait(0.2)
+coroutine.wrap(SpawnAfterImage)()
 CreateHitbox(Vector3.new(38, 28, 46), Vector3.new(0, 0, -5), 0.15)
+task.delay(0.01, function() coroutine.wrap(SpawnAfterImage)() end)
 task.delay(0.3, function() CreateHitbox(Vector3.new(38, 28, 46), Vector3.new(0, 0, -5), 0.15) end)
 end
 local function BlueFlash()
@@ -3830,361 +3898,63 @@ coroutine.wrap(StopFling)()
 end
 
 local function DieAbility()
-local function DieAnim()
 local players = game:GetService("Players")
-local runService = game:GetService("RunService")
 local player = players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+local hrp = character:WaitForChild("HumanoidRootPart")
 local humanoid = character:WaitForChild("Humanoid")
-
-local animationIds = {
-Stomp = "rbxassetid://17569164461",
-Dropkick = "rbxassetid://122236786027040",
-Flip = "rbxassetid://16144846625"
-}
-
-local animations = {}
-for name, id in pairs(animationIds) do
-local animation = Instance.new("Animation")
-animation.AnimationId = id
-animations[name] = humanoid:LoadAnimation(animation)
-end
-
-animations.Dropkick:Play()
-animations.Dropkick.TimePosition = 0.5
-animations.Dropkick:AdjustSpeed(0)
-wait(1)
-animations.Dropkick:Stop()
-animations.Flip:Play()
-animations.Flip.TimePosition = 0.4
-animations.Flip:AdjustSpeed(0)
-wait(0.3)
-animations.Flip:Stop()
-end
-
-local function ShockWave()
-local player = game.Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-local BasePosition = humanoidRootPart.Position + Vector3.new(0, 2, 0)
-local SWD = Instance.new("Part")
-SWD.Size = Vector3.new(10,1,10)
-SWD.Position = BasePosition
-SWD.Anchored = true
-SWD.CanCollide = false
-SWD.Name = "SWD"
-SWD.Transparency = 1
-SWD.Parent = workspace
-SWD.CastShadow = false
-local SWDD = Instance.new("Decal")
-SWDD.Texture = "rbxassetid://18642925033"
-SWDD.Face = Enum.NormalId.Top
-SWDD.Parent = SWD
-local SW = Instance.new("MeshPart")
-SW.MeshId = "rbxassetid://6797156017"
-SW.Size = Vector3.new(6, 6, 6)
-SW.Position = humanoidRootPart.Position
-SW.Anchored = true
-SW.Name = "SW"
-SW.CanCollide = false
-SW.Transparency = 0.7
-SW.Color = Color3.fromRGB(255, 165, 0)
-SW.Material = Enum.Material.Neon
-SW.Parent = workspace
-SW.CastShadow = false
-local SW2 = Instance.new("MeshPart")
-SW2.MeshId = "rbxassetid://6797156017"
-SW2.Size = Vector3.new(6,6,6)
-SW2.Position = humanoidRootPart.Position
-SW2.Anchored = true
-SW2.Name = "SW2"
-SW2.CanCollide = false
-SW2.Transparency = 0
-SW2.Color = Color3.fromRGB(255, 165, 0)
-SW2.Material = Enum.Material.ForceField
-SW2.Parent = workspace
-SW2.CastShadow = false
 local TweenService = game:GetService("TweenService")
-local SizeGoal = {Size = Vector3.new(130, 1, 130)}
-local SizeGoal2 = {Size = Vector3.new(50, 15, 50), Transparency = 1}
-local TweenInfo = TweenInfo.new(2, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
-local Tween = TweenService:Create(SWD, TweenInfo, SizeGoal)
-local Tween2 = TweenService:Create(SW, TweenInfo, SizeGoal2)
-local Tween3 = TweenService:Create(SWDD, TweenInfo, {Transparency = 1})
-local Tween4 = TweenService:Create(SW2, TweenInfo, SizeGoal2)
-Tween:Play()
-Tween2:Play()
-Tween3:Play()
-Tween4:Play()
-Tween.Completed:Connect(function()
-SWD:Destroy()
-SW:Destroy()
-SW2:Destroy()
-end)
+local Debris = game:GetService("Debris")
+
+local function PlayPunchSnd()
+local snd = Instance.new("Sound")
+snd.SoundId = "rbxassetid://18694755502"
+snd.Volume = 1.5
+snd.Parent = hrp
+snd:Play()
+snd.Ended:Connect(function() snd:Destroy() end)
+local snd2 = Instance.new("Sound")
+snd2.SoundId = "rbxassetid://75233844730127"
+snd2.Volume = 1
+snd2.Parent = hrp
+snd2:Play()
+snd2.Ended:Connect(function() snd2:Destroy() end)
 end
 
-local function ROKK()
-local playerPosition = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
-local count = math.random(7, 15)
-for i = 1, count do
-local ROKK = Instance.new("MeshPart")
-ROKK.MeshId = "rbxassetid://10433873780"
-ROKK.TextureID = "rbxassetid://7060550066"
-ROKK.Size = Vector3.new(1,6,1)
-ROKK.Position = playerPosition + Vector3.new(math.random(-5, 5), -10, math.random(-5, 5))
-ROKK.Anchored = true
-ROKK.CanCollide = false
-ROKK.Name = "ROKK"
-ROKK.Transparency = 0
-ROKK.Parent = workspace
-ROKK.CastShadow = false
-local goalPosition = playerPosition + Vector3.new(math.random(-5, 5), -2, math.random(-5, 5))
-local tweenInfo = TweenInfo.new(0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
-local tween = game:GetService("TweenService"):Create(ROKK, tweenInfo, {Position = goalPosition})
-tween:Play()
-tween.Completed:Connect(function()
-local lookAtCFrame = CFrame.lookAt(ROKK.Position, playerPosition)
-local leanRotation = CFrame.Angles(math.rad(20), 0, 0)
-ROKK.CFrame = lookAtCFrame * leanRotation
-local fadeTween = game:GetService("TweenService"):Create(ROKK,TweenInfo.new(0.75, Enum.EasingStyle.Linear, Enum.EasingDirection.Out),{Transparency = 1})
-wait(3)
-fadeTween:Play()
-fadeTween.Completed:Connect(function()
-ROKK:Destroy()
-end)
-end)
-end
+local function DieFlash()
+local Players = game:GetService("Players")
+local tws = game:GetService("TweenService")
+local char2 = player.Character or player.CharacterAdded:Wait()
+local hrp2 = char2:WaitForChild("HumanoidRootPart")
+local gui = Instance.new("BillboardGui")
+gui.Size = UDim2.new(4, 0, 4, 0)
+gui.Adornee = hrp2
+gui.AlwaysOnTop = true
+gui.LightInfluence = 0
+gui.Parent = hrp2
+local img = Instance.new("ImageLabel")
+img.AnchorPoint = Vector2.new(0.5, 0.5)
+img.Position = UDim2.new(0.5, 0, 0.5, 0)
+img.BackgroundTransparency = 1
+img.Size = UDim2.new(0.4, 0, 0.4, 0)
+img.Image = "rbxassetid://127539265797898"
+img.ImageTransparency = 0
+img.ScaleType = Enum.ScaleType.Fit
+img.Parent = gui
+local grow = tws:Create(img, TweenInfo.new(0.07, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = UDim2.new(1, 0, 1, 0)})
+grow:Play()
+grow.Completed:Wait()
+local shrink = tws:Create(img, TweenInfo.new(0.07, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {Size = UDim2.new(0.05, 0, 0.05, 0)})
+shrink:Play()
+shrink.Completed:Wait()
+gui:Destroy()
 end
 
-local function Gas()
-local player = game.Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-local count = math.random(3, 7)
-
-for i = 1, count do
-local gas = Instance.new("MeshPart")
-gas.MeshId = "rbxassetid://4729380505"
-gas.Size = Vector3.new(1, 20, 0.5)
-gas.Position = humanoidRootPart.Position - Vector3.new(0, 10, 0)
-gas.Anchored = true
-gas.Name = "Gas"
-gas.CanCollide = false
-gas.Transparency = 0
-gas.Color = Color3.fromRGB(255, 255, 255)
-gas.Material = Enum.Material.ForceField
-gas.Parent = workspace
-gas.CastShadow = false
-
-local targetPos = humanoidRootPart.Position + Vector3.new(math.random(-10, 10), 40, math.random(-10, 10))
-local direction = (targetPos - gas.Position).unit
-local rotationOffset = Vector3.new(90, 0, 0)
-gas.CFrame = CFrame.lookAt(gas.Position, targetPos) * CFrame.Angles(math.rad(rotationOffset.X), math.rad(rotationOffset.Y), math.rad(rotationOffset.Z))
-
-local tweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
-local goal = {Position = targetPos, Transparency = 1}
-local tween = game:GetService("TweenService"):Create(gas, tweenInfo, goal)
-tween:Play()
-
-task.delay(2, function()
-if gas and gas.Parent then
-gas:Destroy()
-end
-end)
-
-wait(0.01)
-end
-end
-
-local function ParticleS()
-local player = game.Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-local spawnAmount = math.random(3, 10)
-for _ = 1, spawnAmount do
-local PTCL = Instance.new("MeshPart")
-PTCL.MeshId = "rbxassetid://10433873780"
-PTCL.TextureID = "rbxassetid://7060550066"
-PTCL.Size = Vector3.new(0.7, 0.7, 0.7)
-PTCL.Position = humanoidRootPart.Position
-PTCL.Anchored = false
-PTCL.CanCollide = false
-PTCL.Name = "PTCL"
-PTCL.Parent = workspace
-local randomDirection = (Vector3.new(math.random(-10, 10), 10, math.random(-10, 10))).Unit
-local randomVelocity = math.random(50, 75)
-local bodyVelocity = Instance.new("BodyVelocity")
-bodyVelocity.Velocity = randomDirection * randomVelocity
-bodyVelocity.MaxForce = Vector3.new(100000, 100000, 100000)
-bodyVelocity.P = 5000
-bodyVelocity.Parent = PTCL
-PTCL.CFrame = PTCL.CFrame * CFrame.Angles(math.random(), math.random(), math.random())
-local trail = Instance.new("Trail")
-trail.Color = ColorSequence.new(Color3.fromRGB(150,150,150))
-trail.Lifetime = 0.5
-trail.FaceCamera = true
-trail.Enabled = true
-trail.WidthScale = NumberSequence.new(1, 1)
-local attachment0 = Instance.new("Attachment")
-local attachment1 = Instance.new("Attachment")
-attachment1.Position = Vector3.new(0, -0.5, 0)
-attachment0.Parent = PTCL
-attachment1.Parent = PTCL
-trail.Attachment0 = attachment0
-trail.Attachment1 = attachment1
-trail.Parent = PTCL
-local transparencySequence = NumberSequence.new({
-NumberSequenceKeypoint.new(0, 0),
-NumberSequenceKeypoint.new(1, 1)})
-trail.Transparency = transparencySequence
-coroutine.wrap(function()
-wait(0.25)
-bodyVelocity:Destroy()
-PTCL.CanCollide = true
-wait(4.5)
-PTCL:Destroy()
-end)()
-end
-end
-
-local function Aura()
-local player = game.Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-local function createAura()
-local auraPart = Instance.new("Part")
-auraPart.Size = Vector3.new(1, 1, 1)
-auraPart.Anchored = true
-auraPart.CanCollide = false
-auraPart.Transparency = 1
-auraPart.Position = humanoidRootPart.Position
-auraPart.Parent = workspace
-local auraGui = Instance.new("BillboardGui")
-auraGui.Size = UDim2.new(1, 0, 1, 0)
-auraGui.AlwaysOnTop = true
-auraGui.Parent = auraPart
-local auraImage = Instance.new("ImageLabel")
-auraImage.Size = UDim2.new(1, 0, 1, 0)
-auraImage.Image = "rbxassetid://106822944701902"
-auraImage.BackgroundTransparency = 1
-auraImage.Position = UDim2.new(0, 0, 0, 0)
-auraImage.ImageTransparency = 0
-auraImage.ImageColor3 = Color3.fromRGB(255, 255, 255)
-auraImage.Parent = auraGui
-coroutine.wrap(function()
-for i = 0, 20, 0.1 do
-local size = 80 - (200 * i)
-auraGui.Size = UDim2.new(size, 0, size, 0)
-auraImage.ImageTransparency = i
-wait(0.05)
-end
-auraPart:Destroy()
-end)()
-end
-for i = 1, 1 do
-createAura()
-wait(0.15)
-end
-end
-local function createTrail()
-local player = game.Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-local Head = character:WaitForChild("Head")
-local trail = Instance.new("Trail")
-trail.Color = ColorSequence.new(Color3.fromRGB(255,255,255))
-trail.Lifetime = 0.5
-trail.FaceCamera = true
-trail.WidthScale = NumberSequence.new(1, 0)
-trail.Transparency = NumberSequence.new(0.65, 1)
-local attachment0 = Instance.new("Attachment", Head)
-local attachment1 = Instance.new("Attachment", Head)
-attachment1.Position = Vector3.new(0, -3, 0)
-trail.Attachment0 = attachment0
-trail.Attachment1 = attachment1
-trail.Parent = Head
-task.wait(0.5)
-trail:Destroy()
-end
-local function PlaySE(N, times)
-for _ = 1, times do
-coroutine.wrap(function()
-game:GetService("ReplicatedStorage"):WaitForChild("PlaySoundRemote"):InvokeServer(N,game:GetService("Players").LocalPlayer.Character:FindFirstChild("Torso") or game:GetService("Players").LocalPlayer.Character:FindFirstChild("UpperTorso"))
-end)()
-end
-end
-local function Flash()
-game:GetService("ReplicatedStorage").slapstick:FireServer("fullcharged")
-game:GetService("ReplicatedStorage").slapstick:FireServer("fullcharged")
-end
-local players = game:GetService("Players")
-local runService = game:GetService("RunService")
-local player = players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-local humanoid = character:WaitForChild("Humanoid")
-local function PlayS(id, loudness)
-local sound = Instance.new("Sound")
-sound.SoundId = "rbxassetid://" .. id
-sound.Volume = loudness
-sound.Parent = humanoidRootPart
-sound:Play()
-sound.Ended:Connect(function()
-sound:Destroy()
-end)
-end
-
-local function Dialogue()
-showMessage("Die!", 0)
-end
-local function CrushS()
-local soundId = math.random(1, 2) == 1 and 7007955646 or 7007955031
-PlayS(soundId, 1)
-PlayS(6996368591, 1)
-coroutine.wrap(Dialogue)()
-end
-local function StartDieSfx()
-coroutine.wrap(Aura)()
-coroutine.wrap(createTrail)()
-wait(0.08)
-PlayS(1741599172, 1)
-PlayS(108167991407954, 3)
-coroutine.wrap(ShockWave)()
-coroutine.wrap(ROKK)()
-coroutine.wrap(Gas)()
-coroutine.wrap(ParticleS)()
-end
-local function impactSfx()
-wait(0.3)
-game:GetService("ReplicatedStorage").Events.Silly:FireServer("jump")
-game:GetService("ReplicatedStorage").Events.Silly:FireServer("jump")
-game:GetService("ReplicatedStorage").Events.Silly:FireServer("jump")
-game:GetService("ReplicatedStorage").Events.Silly:FireServer("jump")
-game:GetService("ReplicatedStorage").Events.Silly:FireServer("jump")
-game:GetService("ReplicatedStorage").RetroAbility:FireServer("Bomb")
-local players = game:GetService("Players")
-local player = players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-local hrp = character:WaitForChild("HumanoidRootPart")
-local bv2 = hrp:FindFirstChild("BodyVelocity") or hrp:WaitForChild("BodyVelocity", 3)
-if bv2 then bv2:Destroy() end
-end
-local function LookandTp()
-local players = game:GetService("Players")
-local runService = game:GetService("RunService")
-local userInput = game:GetService("UserInputService")
-local player = players.LocalPlayer
-local mouse = player:GetMouse()
-local character = player.Character or player.CharacterAdded:Wait()
-local hrp = character:WaitForChild("HumanoidRootPart")
-local clicked = false
-local function getNearestPlayerTo(pos, range)
-local closest = nil
-local shortest = range
-for _, p in players:GetPlayers() do
+local function getClosestEnemy()
+local closest, shortest = nil, math.huge
+for _, p in ipairs(players:GetPlayers()) do
 if p ~= player and p.Character and p.Character:FindFirstChild("HumanoidRootPart") then
-local dist = (p.Character.HumanoidRootPart.Position - pos).Magnitude
+local dist = (p.Character.HumanoidRootPart.Position - hrp.Position).Magnitude
 if dist < shortest then
 shortest = dist
 closest = p
@@ -4193,49 +3963,111 @@ end
 end
 return closest
 end
-mouse.Button1Down:Connect(function()
-if clicked or userInput:GetFocusedTextBox() then return end
-clicked = true
-coroutine.wrap(DieAnim)()
-coroutine.wrap(CrushS)()
-local clickPos = mouse.Hit and mouse.Hit.Position
-if not clickPos then return end
-local targetPlayer = getNearestPlayerTo(clickPos, 25)
-local origin = hrp.Position
-local finalLook = nil
-local targetPosGetter
-if targetPlayer and targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart") then
-local h = targetPlayer.Character.HumanoidRootPart
-targetPosGetter = function() return h.Position end
-else
-local staticPos = clickPos
-targetPosGetter = function() return staticPos end
+
+local function DragEffect(startPos, endPos)
+local dir = (endPos - startPos).Unit
+local dist = (endPos - startPos).Magnitude
+local traveled = 0
+while traveled < dist do
+local gas = Instance.new("MeshPart")
+gas.MeshId = "rbxassetid://4729380505"
+gas.Size = Vector3.new(1, 20, 0.5)
+gas.Position = startPos + dir * traveled - Vector3.new(0, 10, 0)
+gas.Anchored = true
+gas.CanCollide = false
+gas.CastShadow = false
+gas.Transparency = 0
+gas.Material = Enum.Material.ForceField
+gas.Color = Color3.fromRGB(255, 100, 100)
+gas.Parent = workspace
+local targetPos = gas.Position + Vector3.new(math.random(-8,8), 40, math.random(-8,8))
+gas.CFrame = CFrame.lookAt(gas.Position, targetPos) * CFrame.Angles(math.rad(90), 0, 0)
+local tw = TweenService:Create(gas, TweenInfo.new(0.25, Enum.EasingStyle.Linear), {Position = targetPos, Transparency = 1})
+tw:Play()
+tw.Completed:Connect(function() if gas and gas.Parent then gas:Destroy() end end)
+traveled = traveled + 3
 end
-local start = tick()
-while tick() - start < 0.7 do
-local lookAt = targetPosGetter()
-hrp.CFrame = CFrame.new(origin, lookAt)
-finalLook = hrp.CFrame.LookVector
-hrp.Velocity = Vector3.zero
-hrp.AssemblyLinearVelocity = Vector3.zero
-hrp.AssemblyAngularVelocity = Vector3.zero
-runService.RenderStepped:Wait()
 end
-coroutine.wrap(StartDieSfx)()
-wait(0.03)
-coroutine.wrap(StopFling)()
-coroutine.wrap(impactSfx)()
-if finalLook then
-local moveDir = Vector3.new(finalLook.X, 0, finalLook.Z).Unit
-local endPos = targetPosGetter()
-local tpPos = endPos - (moveDir * 2)
-hrp.CFrame = CFrame.new(tpPos, tpPos + moveDir)
+
+local function PunchAnim()
+local anim = Instance.new("Animation")
+local animIds = {"rbxassetid://109511274923523", "rbxassetid://133068451086106"}
+anim.AnimationId = animIds[math.random(1,2)]
+local track = humanoid:LoadAnimation(anim)
+track.Priority = Enum.AnimationPriority.Action
+track:Play()
+track.TimePosition = 0.1
+task.delay(0.4, function() track:Stop() end)
+end
+
+showMessage("Die!", 0)
+game:GetService("ReplicatedStorage").slapstick:FireServer("fullcharged")
+game:GetService("ReplicatedStorage").slapstick:FireServer("fullcharged")
+
+local target = getClosestEnemy()
+if not target or not target.Character then return end
+local targetHrp = target.Character.HumanoidRootPart
+
+local prevPos = hrp.Position
+local offset = (hrp.Position - targetHrp.Position)
+offset = Vector3.new(offset.X, 0, offset.Z).Unit * 3
+local tpPos = targetHrp.Position + offset
+hrp.CFrame = CFrame.new(tpPos, targetHrp.Position)
+coroutine.wrap(DragEffect)(prevPos, tpPos)
+
+for punch = 1, 5 do
+local tChar = target.Character
+if not tChar or not tChar:FindFirstChild("HumanoidRootPart") then break end
+local tHrp = tChar.HumanoidRootPart
+
+local newOffset = (hrp.Position - tHrp.Position)
+newOffset = Vector3.new(newOffset.X, 0, newOffset.Z).Unit * 3
+local newTp = tHrp.Position + newOffset
+hrp.CFrame = CFrame.new(newTp, tHrp.Position)
+
+coroutine.wrap(DieFlash)()
+coroutine.wrap(PlayPunchSnd)()
+coroutine.wrap(PunchAnim)()
+coroutine.wrap(function()
+local dieVoiceId = math.random(1,2) == 1 and 7007955646 or 7007955031
+local vs = Instance.new("Sound")
+vs.SoundId = "rbxassetid://" .. dieVoiceId
+vs.Volume = 1.2
+vs.Parent = hrp
+vs:Play()
+vs.Ended:Connect(function() vs:Destroy() end)
+end)()
+
+coroutine.wrap(SpawnAfterImage)()
 CreateHitbox(Vector3.new(32, 26, 32), Vector3.new(0, 0, -4), 0.35)
+task.delay(0.01, function() coroutine.wrap(SpawnAfterImage)() end)
 task.delay(0.3, function() CreateHitbox(Vector3.new(32, 26, 32), Vector3.new(0, 0, -4), 0.35) end)
+
+game:GetService("ReplicatedStorage").slapstick:FireServer("fullcharged")
+
+if punch < 5 then
+wait(1.2)
 end
-end)
 end
-coroutine.wrap(LookandTp)()
+
+
+coroutine.wrap(function()
+local sw = Instance.new("MeshPart")
+sw.MeshId = "rbxassetid://6797156017"
+sw.Size = Vector3.new(8, 8, 8)
+sw.Position = hrp.Position
+sw.Anchored = true
+sw.CanCollide = false
+sw.Transparency = 0.5
+sw.Color = Color3.fromRGB(255, 80, 80)
+sw.Material = Enum.Material.Neon
+sw.Parent = workspace
+local tw = TweenService:Create(sw, TweenInfo.new(1, Enum.EasingStyle.Sine), {Size = Vector3.new(60, 60, 60), Transparency = 1})
+tw:Play()
+tw.Completed:Connect(function() sw:Destroy() end)
+end)()
+
+coroutine.wrap(StopFling)()
 end
 
 local function Judgement()
@@ -4591,7 +4423,9 @@ animations.Crouch:Stop()
 coroutine.wrap(BlueP2)()
 coroutine.wrap(Banggg)()
 coroutine.wrap(BlueWave)()
+coroutine.wrap(SpawnAfterImage)()
 CreateHitbox(Vector3.new(38, 38, 38), Vector3.new(0, 0, -2), 0.4)
+task.delay(0.01, function() coroutine.wrap(SpawnAfterImage)() end)
 task.delay(0.3, function() CreateHitbox(Vector3.new(38, 38, 38), Vector3.new(0, 0, -2), 0.4) end)
 wait(0.7)
 game.Players.LocalPlayer.Character:WaitForChild("Humanoid").WalkSpeed = 25
@@ -5064,7 +4898,9 @@ coroutine.wrap(Gas)()
 coroutine.wrap(ParticleS)()
 coroutine.wrap(BlueP2)()
 coroutine.wrap(BlueWave)()
+coroutine.wrap(SpawnAfterImage)()
 CreateHitbox(Vector3.new(44, 28, 44), Vector3.new(0, -2, -5), 0.4)
+task.delay(0.01, function() coroutine.wrap(SpawnAfterImage)() end)
 task.delay(0.3, function() CreateHitbox(Vector3.new(44, 28, 44), Vector3.new(0, -2, -5), 0.4) end)
 wait(0.5)
 local P = game:GetService("Players").LocalPlayer
@@ -5087,7 +4923,6 @@ local function PunchAbility()
 	snd.Parent = phrp
 	snd:Play()
 	snd.Ended:Connect(function() snd:Destroy() end)
-	CreateHitbox(Vector3.new(20, 10, 20), Vector3.new(0, 0, -5), 0.35)
 	coroutine.wrap(PunchT)()
 end
 
