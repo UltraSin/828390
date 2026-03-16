@@ -87,7 +87,7 @@ gui.Position = UDim2.new(0, props.Pos[1], 0, props.Pos[2])
 gui.BackgroundColor3 = Color3.fromRGB(unpack(props.BackgroundColor or {255, 255, 255}))
 gui.BackgroundTransparency = tonumber(props.BackgroundTransparency) or 0
 gui.BorderSizePixel = 0
-gui.Parent = props.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui")
+gui.Parent = props.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui", 5)
 if gui:IsA("TextLabel") or gui:IsA("TextButton") or gui:IsA("TextBox") then
 gui.Text = props.Text or ""
 gui.Font = Enum.Font.Arcade
@@ -341,7 +341,7 @@ local function DestroyItMan()
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
-local humanoid = character:WaitForChild("Humanoid")
+local humanoid = character:WaitForChild("Humanoid", 5)
 humanoid.Died:Connect(function()
 if DestroyGuiA then
 DestroyGuiA()
@@ -351,7 +351,7 @@ end
 
 local L = game.Players.LocalPlayer
 local C = L.Character or L.CharacterAdded:Wait()
-local humanoidRootPart = C:WaitForChild("HumanoidRootPart")
+local humanoidRootPart = C:WaitForChild("HumanoidRootPart", 5)
 local function PlayS(id, loudness)
 local sound = Instance.new("Sound")
 sound.SoundId = "rbxassetid://" .. id
@@ -378,7 +378,7 @@ end
 local function PlaySE(N, times)
 for _ = 1, times do
 coroutine.wrap(function()
-game:GetService("ReplicatedStorage"):WaitForChild("PlaySoundRemote"):InvokeServer(N,game:GetService("Players").LocalPlayer.Character:FindFirstChild("Torso") or game:GetService("Players").LocalPlayer.Character:FindFirstChild("UpperTorso"))
+pcall(function() game:GetService("ReplicatedStorage"):WaitForChild("PlaySoundRemote", 5):InvokeServer(N,game:GetService("Players").LocalPlayer.Character:FindFirstChild("Torso") or game:GetService("Players").LocalPlayer.Character:FindFirstChild("UpperTorso")) end)
 end)()
 end
 end
@@ -392,7 +392,7 @@ local function PushBack()
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 local char = player.Character or player.CharacterAdded:Wait()
-local hrp = char:WaitForChild("HumanoidRootPart")
+local hrp = char:WaitForChild("HumanoidRootPart", 5)
 local pushPower = 120
 local upwardPower = 17.5
 local nearestPlayer
@@ -419,7 +419,7 @@ function ActMinosPrimeM(status)
 local player = game.Players.LocalPlayer
 if status == true then
 local char = player.Character or player.CharacterAdded:Wait()
-local humanoid = char:WaitForChild("Humanoid")
+local humanoid = char:WaitForChild("Humanoid", 5)
 if not sound or sound.Parent == nil then
 sound = Instance.new("Sound")
 sound.SoundId = getcustomasset("MinosPrimeTheme.mp3")
@@ -519,7 +519,7 @@ lastDamageTime = currentTime
 if not isInvulnerable then
 ActHpChange(-damageAmount)
 PlayS(105270091788367,1.5)
-game:GetService("ReplicatedStorage").Prop:FireServer()
+pcall(function() game:GetService("ReplicatedStorage").Prop:FireServer() end)
 end
 end
 end)
@@ -567,7 +567,7 @@ end
 wait(1)
 end
 end)
-player.Character:WaitForChild("Humanoid").Died:Connect(function()
+player.Character:WaitForChild("Humanoid", 5).Died:Connect(function()
 isAlive = false
 hitboxActive = false
 for _, conn in pairs(connections) do
@@ -713,7 +713,7 @@ end
 local function Morph()
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local hrp = character:WaitForChild("HumanoidRootPart")
+local hrp = character:WaitForChild("HumanoidRootPart", 5)
 local torso = character:FindFirstChild("Torso") or character:FindFirstChild("UpperTorso")
 local function setTransparency(obj)
 if obj:IsA("BasePart") and obj ~= hrp then
@@ -826,7 +826,7 @@ local createdPyramids = {}
 local function BeamDie()
 local player = game.Players.LocalPlayer
 local char = player.Character or player.CharacterAdded:Wait()
-local hrp = char:WaitForChild("HumanoidRootPart")
+local hrp = char:WaitForChild("HumanoidRootPart", 5)
 local pyramid = Instance.new("MeshPart")
 pyramid.MeshId = "rbxassetid://9720331880"
 pyramid.Size = Vector3.new(3, 15, 3)
@@ -860,7 +860,7 @@ end
 local function DeathBoom()
 local player = game.Players.LocalPlayer
 local char = player.Character or player.CharacterAdded:Wait()
-local hrp = char:WaitForChild("HumanoidRootPart")
+local hrp = char:WaitForChild("HumanoidRootPart", 5)
 local sound = Instance.new("Sound")
 sound.SoundId = "rbxassetid://108167991407954"
 sound.Volume = 1
@@ -888,7 +888,7 @@ end
 local function ViewDie()
 local p = game.Players.LocalPlayer
 local char = p.Character or p.CharacterAdded:Wait()
-local hrp = char:WaitForChild("HumanoidRootPart")
+local hrp = char:WaitForChild("HumanoidRootPart", 5)
 local part = Instance.new("Part")
 part.Size = Vector3.new(1,1,1)
 part.Transparency = 1
@@ -905,7 +905,7 @@ end
 local function ShockwaveDied()
 local player = game.Players.LocalPlayer
 local char = player.Character or player.CharacterAdded:Wait()
-local hrp = char:WaitForChild("HumanoidRootPart")
+local hrp = char:WaitForChild("HumanoidRootPart", 5)
 
 local part = Instance.new("Part")
 part.Size = Vector3.new(5, 1, 5)
@@ -938,7 +938,7 @@ end
 local function BamDied()
 local player = game.Players.LocalPlayer
 local char = player.Character or player.CharacterAdded:Wait()
-local hrp = char:WaitForChild("HumanoidRootPart")
+local hrp = char:WaitForChild("HumanoidRootPart", 5)
 
 local meshPart = Instance.new("MeshPart")
 meshPart.Size = Vector3.new(0.2, 0.2, 0.2)
@@ -967,7 +967,7 @@ local function DeathAnim()
 local players = game:GetService("Players")
 local player = players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local humanoid = character:WaitForChild("Humanoid")
+local humanoid = character:WaitForChild("Humanoid", 5)
 local animationIds = {
 Second = "rbxassetid://16898368253"
 }
@@ -995,14 +995,14 @@ local players = game:GetService("Players")
 local ts = game:GetService("TweenService")
 local player = players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local humanoid = character:WaitForChild("Humanoid")
+local humanoid = character:WaitForChild("Humanoid", 5)
 humanoid.HipHeight = 2
 local tweenInfo = TweenInfo.new(7.25, Enum.EasingStyle.Linear)
 local tween = ts:Create(humanoid, tweenInfo, {HipHeight = 50})tween:Play()
 end
 local function FlashDeath()
 local p = game.Players.LocalPlayer
-local gui = Instance.new("ScreenGui", p:WaitForChild("PlayerGui"))
+local gui = Instance.new("ScreenGui", p:WaitForChild("PlayerGui", 5))
 local frame = Instance.new("Frame", gui)
 frame.Size = UDim2.new(1,0,1,0)
 frame.BackgroundColor3 = Color3.new(1,1,1)
@@ -1018,24 +1018,24 @@ end
 
 local function DeathFx()
 local RS = game:GetService("ReplicatedStorage")
-local Remote = RS:WaitForChild("slapstick")
+local Remote = RS:WaitForChild("slapstick", 5)
 local duration = 7.5
 local interval = 0.1
 local endTime = tick() + duration
 while tick() < endTime do
-Remote:FireServer("fullcharged")
+pcall(function() Remote:FireServer("fullcharged") end)
 task.wait(interval)
 end
 end
 
 local function DeathFx2()
 local RS = game:GetService("ReplicatedStorage")
-local Remote = RS:WaitForChild("Prop")
+local Remote = RS:WaitForChild("Prop", 5)
 local duration = 7.5
 local interval = 0.26
 local endTime = tick() + duration
 while tick() < endTime do
-Remote:FireServer()
+pcall(function() Remote:FireServer() end)
 task.wait(interval)
 end
 end
@@ -1060,7 +1060,7 @@ local function ChoirIguess2()
 local player = game.Players.LocalPlayer
 soundInstance2 = Instance.new("Sound")
 soundInstance2.SoundId = "rbxassetid://9114792002"
-soundInstance2.Parent = player.Character:WaitForChild("HumanoidRootPart")
+soundInstance2.Parent = player.Character:WaitForChild("HumanoidRootPart", 5)
 soundInstance2.Volume = 1.5
 soundInstance2.Looped = true
 soundInstance2:Play()
@@ -1095,7 +1095,7 @@ end
 
 local L = game.Players.LocalPlayer
 local C = L.Character or L.CharacterAdded:Wait()
-local humanoidRootPart = C:WaitForChild("HumanoidRootPart")
+local humanoidRootPart = C:WaitForChild("HumanoidRootPart", 5)
 local function PlayS(id, loudness)
 local sound = Instance.new("Sound")
 sound.SoundId = "rbxassetid://" .. id
@@ -1111,7 +1111,7 @@ local function ShakingBody()
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 local char = player.Character or player.CharacterAdded:Wait()
-local hrp = char:WaitForChild("HumanoidRootPart")
+local hrp = char:WaitForChild("HumanoidRootPart", 5)
 
 local part = Instance.new("Part")
 part.Size = Vector3.new(1, 1, 1)
@@ -1148,7 +1148,7 @@ local function DeepDepAnim()
 local players = game:GetService("Players")
 local player = players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local humanoid = character:WaitForChild("Humanoid")
+local humanoid = character:WaitForChild("Humanoid", 5)
 
 local animationIds = {
 Diedboi = "rbxassetid://16102418873"
@@ -1161,7 +1161,7 @@ animation.AnimationId = id
 animations[name] = humanoid:LoadAnimation(animation)
 end
 
-game.Players.LocalPlayer.Character:WaitForChild("Humanoid").HipHeight = 5
+game.Players.LocalPlayer.Character:WaitForChild("Humanoid", 5).HipHeight = 5
 animations.Diedboi:Play()
 animations.Diedboi:AdjustSpeed(0.1)
 
@@ -1184,7 +1184,7 @@ local function NoVelocityDeath()
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local hrp = character:WaitForChild("HumanoidRootPart")
+local hrp = character:WaitForChild("HumanoidRootPart", 5)
 local duration = 2.5
 local interval = 0.01
 local startTime = tick()
@@ -1218,11 +1218,11 @@ coroutine.wrap(ShockwaveDied)()
 coroutine.wrap(FlashDeath)()
 coroutine.wrap(Break)()
 StopChoir2()
-game:GetService("ReplicatedStorage").RetroAbility:FireServer("Bomb")
+pcall(function() game:GetService("ReplicatedStorage").RetroAbility:FireServer("Bomb") end)
 local players = game:GetService("Players")
 local player = players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local hrp = character:WaitForChild("HumanoidRootPart")
+local hrp = character:WaitForChild("HumanoidRootPart", 5)
 local bv1 = hrp:FindFirstChild("BodyVelocity") or hrp:WaitForChild("BodyVelocity", 3)
 if bv1 then bv1:Destroy() end
 wait(0.01)
@@ -1305,7 +1305,7 @@ end
 disableMyNametag()
 end)
 
-player.Character:WaitForChild("Humanoid").Died:Connect(function()
+player.Character:WaitForChild("Humanoid", 5).Died:Connect(function()
 alive = false
 end)
 end
@@ -1316,24 +1316,24 @@ end
 
 local function IntroFx()
 local RS = game:GetService("ReplicatedStorage")
-local Remote = RS:WaitForChild("slapstick")
+local Remote = RS:WaitForChild("slapstick", 5)
 local duration = 6
 local interval = 0.1
 local endTime = tick() + duration
 while tick() < endTime do
-Remote:FireServer("fullcharged")
+pcall(function() Remote:FireServer("fullcharged") end)
 task.wait(interval)
 end
 end
 
 local function IntroFx2()
 local RS = game:GetService("ReplicatedStorage")
-local Remote = RS:WaitForChild("Prop")
+local Remote = RS:WaitForChild("Prop", 5)
 local duration = 6
 local interval = 0.26
 local endTime = tick() + duration
 while tick() < endTime do
-Remote:FireServer()
+pcall(function() Remote:FireServer() end)
 task.wait(interval)
 end
 end
@@ -1362,8 +1362,8 @@ end
 
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-local humanoid = character:WaitForChild("Humanoid")
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart", 5)
+local humanoid = character:WaitForChild("Humanoid", 5)
 local closestPlayer = nil
 local shortestDistance = math.huge
 local animationIds = {
@@ -1422,7 +1422,7 @@ end
 function teleportAndChangeGravity()
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart", 5)
 humanoidRootPart.CFrame = CFrame.new(0, 35, 0)
 game.Workspace.Gravity = 2
 wait(6)
@@ -1449,7 +1449,7 @@ local function ChoirIguess()
 local player = game.Players.LocalPlayer
 soundInstance = Instance.new("Sound")
 soundInstance.SoundId = "rbxassetid://9114792002"
-soundInstance.Parent = player.Character:WaitForChild("HumanoidRootPart")
+soundInstance.Parent = player.Character:WaitForChild("HumanoidRootPart", 5)
 soundInstance.Volume = 1
 soundInstance.Looped = true
 soundInstance:Play()
@@ -1463,7 +1463,7 @@ end
 local function createBall(speed)
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart", 5)
 local ball = Instance.new("Part")
 ball.Size, ball.Shape = Vector3.new(1, 1, 1), Enum.PartType.Ball
 ball.Color, ball.Material = Color3.fromRGB(200, 200, 255), Enum.Material.Neon
@@ -1506,7 +1506,7 @@ end
 local function Aura()
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart", 5)
 while not stopFunctions do
 local auraGui = Instance.new("BillboardGui")
 auraGui.Size, auraGui.Adornee, auraGui.AlwaysOnTop = UDim2.new(1, 0, 1, 0), humanoidRootPart, true
@@ -1530,7 +1530,7 @@ local function DeBall()
 wait(0.2)
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart", 5)
 local function createBall(size, color, material, transparency, duration)
 local ball = Instance.new("Part")
 ball.Shape = Enum.PartType.Ball
@@ -1560,9 +1560,9 @@ local gui=Instance.new("ScreenGui")
 local Click=Instance.new("Sound")
 Click.SoundId="rbxassetid://6042053626"
 Click.Volume=0.75
-Click.Parent=game.Players.LocalPlayer:WaitForChild("PlayerGui")
+Click.Parent=game.Players.LocalPlayer:WaitForChild("PlayerGui", 5)
 local Text1=Instance.new("TextLabel")
-gui.Parent=game.Players.LocalPlayer:WaitForChild("PlayerGui")
+gui.Parent=game.Players.LocalPlayer:WaitForChild("PlayerGui", 5)
 Text1.Parent=gui
 Text1.TextColor3=Color3.fromRGB(255,255,255)
 Text1.Font=Enum.Font.Arcade
@@ -1666,7 +1666,7 @@ local function Break()
 local player = game.Players.LocalPlayer
 local sound = Instance.new("Sound")
 sound.SoundId = "rbxassetid://6737582037"
-sound.Parent = player.Character:WaitForChild("HumanoidRootPart")
+sound.Parent = player.Character:WaitForChild("HumanoidRootPart", 5)
 sound.Volume = 1
 sound.PlaybackSpeed = 0.2
 sound:Play()
@@ -1715,7 +1715,7 @@ wait(47.5)
 ToggleWalkAnim(true)
 CreateTrueGui()
 ActUseless(true)
-local h=game.Players.LocalPlayer.Character:WaitForChild("Humanoid"); h.WalkSpeed=22.5; h.JumpPower=50
+local h=game.Players.LocalPlayer.Character:WaitForChild("Humanoid", 5); h.WalkSpeed=22.5; h.JumpPower=50
 ActMinosPrimeM(true)
 coroutine.wrap(StartHitbox)()
 ActHitbox(true)
@@ -1738,8 +1738,8 @@ local Players = game:GetService("Players")
 local RS = game:GetService("ReplicatedStorage")
 local L = Players.LocalPlayer
 local C = L.Character or L.CharacterAdded:Wait()
-RS:WaitForChild("RetroAbility"):FireServer("Bomb")
-local hrp = C:WaitForChild("HumanoidRootPart")
+pcall(function() RS:WaitForChild("RetroAbility", 5):FireServer("Bomb") end)
+local hrp = C:WaitForChild("HumanoidRootPart", 5)
 local BV = hrp:FindFirstChild("BodyVelocity") or hrp:WaitForChild("BodyVelocity", 3)
 if BV then BV:Destroy() end
 Wintro()
@@ -1773,7 +1773,7 @@ end
 disableMyNametag()
 end)
 
-player.Character:WaitForChild("Humanoid").Died:Connect(function()
+player.Character:WaitForChild("Humanoid", 5).Died:Connect(function()
 alive = false
 end)
 end
@@ -1784,24 +1784,24 @@ end
 
 local function IntroFx()
 local RS = game:GetService("ReplicatedStorage")
-local Remote = RS:WaitForChild("slapstick")
+local Remote = RS:WaitForChild("slapstick", 5)
 local duration = 6
 local interval = 0.1
 local endTime = tick() + duration
 while tick() < endTime do
-Remote:FireServer("fullcharged")
+pcall(function() Remote:FireServer("fullcharged") end)
 task.wait(interval)
 end
 end
 
 local function IntroFx2()
 local RS = game:GetService("ReplicatedStorage")
-local Remote = RS:WaitForChild("Prop")
+local Remote = RS:WaitForChild("Prop", 5)
 local duration = 6
 local interval = 0.26
 local endTime = tick() + duration
 while tick() < endTime do
-Remote:FireServer()
+pcall(function() Remote:FireServer() end)
 task.wait(interval)
 end
 end
@@ -1817,8 +1817,8 @@ end
 
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-local humanoid = character:WaitForChild("Humanoid")
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart", 5)
+local humanoid = character:WaitForChild("Humanoid", 5)
 local closestPlayer = nil
 local shortestDistance = math.huge
 local animationIds = {
@@ -1864,7 +1864,7 @@ end
 local function teleportAndChangeGravity()
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart", 5)
 humanoidRootPart.CFrame = CFrame.new(0, 35, 0)
 game.Workspace.Gravity = 2
 wait(6)
@@ -1891,7 +1891,7 @@ local function ChoirIguess()
 local player = game.Players.LocalPlayer
 soundInstance = Instance.new("Sound")
 soundInstance.SoundId = "rbxassetid://9114792002"
-soundInstance.Parent = player.Character:WaitForChild("HumanoidRootPart")
+soundInstance.Parent = player.Character:WaitForChild("HumanoidRootPart", 5)
 soundInstance.Volume = 1
 soundInstance.Looped = true
 soundInstance:Play()
@@ -1905,7 +1905,7 @@ end
 local function createBall(speed)
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart", 5)
 local ball = Instance.new("Part")
 ball.Size, ball.Shape = Vector3.new(1, 1, 1), Enum.PartType.Ball
 ball.Color, ball.Material = Color3.fromRGB(200, 200, 255), Enum.Material.Neon
@@ -1948,7 +1948,7 @@ end
 local function Aura()
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart", 5)
 while not stopFunctions do
 local auraGui = Instance.new("BillboardGui")
 auraGui.Size, auraGui.Adornee, auraGui.AlwaysOnTop = UDim2.new(1, 0, 1, 0), humanoidRootPart, true
@@ -1972,7 +1972,7 @@ local function DeBall()
 wait(0.2)
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart", 5)
 local function createBall(size, color, material, transparency, duration)
 local ball = Instance.new("Part")
 ball.Shape = Enum.PartType.Ball
@@ -2002,9 +2002,9 @@ local gui=Instance.new("ScreenGui")
 local Click=Instance.new("Sound")
 Click.SoundId="rbxassetid://6042053626"
 Click.Volume=0.75
-Click.Parent=game.Players.LocalPlayer:WaitForChild("PlayerGui")
+Click.Parent=game.Players.LocalPlayer:WaitForChild("PlayerGui", 5)
 local Text1=Instance.new("TextLabel")
-gui.Parent=game.Players.LocalPlayer:WaitForChild("PlayerGui")
+gui.Parent=game.Players.LocalPlayer:WaitForChild("PlayerGui", 5)
 Text1.Parent=gui
 Text1.TextColor3=Color3.fromRGB(255,255,255)
 Text1.Font=Enum.Font.Arcade
@@ -2110,7 +2110,7 @@ local function Break()
 local player = game.Players.LocalPlayer
 local sound = Instance.new("Sound")
 sound.SoundId = "rbxassetid://6737582037"
-sound.Parent = player.Character:WaitForChild("HumanoidRootPart")
+sound.Parent = player.Character:WaitForChild("HumanoidRootPart", 5)
 sound.Volume = 1
 sound.PlaybackSpeed = 0.2
 sound:Play()
@@ -2135,8 +2135,8 @@ local Players = game:GetService("Players")
 local RS = game:GetService("ReplicatedStorage")
 local L = Players.LocalPlayer
 local C = L.Character or L.CharacterAdded:Wait()
-RS:WaitForChild("RetroAbility"):FireServer("Bomb")
-local hrp2 = C:WaitForChild("HumanoidRootPart")
+pcall(function() RS:WaitForChild("RetroAbility", 5):FireServer("Bomb") end)
+local hrp2 = C:WaitForChild("HumanoidRootPart", 5)
 local BV = hrp2:FindFirstChild("BodyVelocity") or hrp2:WaitForChild("BodyVelocity", 3)
 if BV then BV:Destroy() end
 task.wait(0.1)
@@ -2162,7 +2162,7 @@ if hpbar then
 hpbar.ChangeHealth(amount)
 end
 end
-local h=game.Players.LocalPlayer.Character:WaitForChild("Humanoid"); h.WalkSpeed=22.5; h.JumpPower=50
+local h=game.Players.LocalPlayer.Character:WaitForChild("Humanoid", 5); h.WalkSpeed=22.5; h.JumpPower=50
 end
 IntroSpeechless()
 end
@@ -2228,7 +2228,7 @@ if enabled then return end
 enabled = true
 local function onCharacter(char)
 if runCheck then runCheck:Disconnect() runCheck = nil end
-local humanoid = char:WaitForChild("Humanoid")
+local humanoid = char:WaitForChild("Humanoid", 5)
 setupHumanoid(humanoid)
 end
 if player.Character then
@@ -2289,7 +2289,7 @@ gui.Position = UDim2.new(0, props.Pos[1], 0, props.Pos[2])
 gui.BackgroundColor3 = Color3.fromRGB(unpack(props.BackgroundColor or {255, 255, 255}))
 gui.BackgroundTransparency = tonumber(props.BackgroundTransparency) or 0
 gui.BorderSizePixel = 0
-gui.Parent = props.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui")
+gui.Parent = props.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui", 5)
 
 if gui:IsA("TextLabel") or gui:IsA("TextButton") or gui:IsA("TextBox") then
 gui.Text = props.Text or ""
@@ -2495,7 +2495,7 @@ game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(0,0,0)
 coroutine.wrap(function()
 	local P = game.Players.LocalPlayer
 	local C = P.Character or P.CharacterAdded:Wait()
-	local hrp = C:WaitForChild("HumanoidRootPart")
+	local hrp = C:WaitForChild("HumanoidRootPart", 5)
 	for _,v in pairs(C:GetDescendants()) do
 		if v:IsA("BasePart") then v.Material = Enum.Material.ForceField end
 	end
@@ -2518,7 +2518,7 @@ end)
 
 C.MouseButton1Click:Connect(function()
 coroutine.wrap(DestroyItMan)()
-local h=game.Players.LocalPlayer.Character:WaitForChild("Humanoid"); h.WalkSpeed=0; h.JumpPower=0
+local h=game.Players.LocalPlayer.Character:WaitForChild("Humanoid", 5); h.WalkSpeed=0; h.JumpPower=0
 coroutine.wrap(SpawnSafeBS)()
 coroutine.wrap(TextBHide)()
 OpenIntro(false)
@@ -2564,7 +2564,7 @@ part.Parent = workspace
 local player = game.Players.LocalPlayer
 local function monitorDeath()
 local char = player.Character or player.CharacterAdded:Wait()
-local hum = char:WaitForChild("Humanoid")
+local hum = char:WaitForChild("Humanoid", 5)
 hum.Died:Connect(function()
 if part and part.Parent then
 part:Destroy()
@@ -2603,7 +2603,7 @@ if ActUselessRunner then return end
 ActUselessStop = false
 ActUselessRunner = task.spawn(function()
 local char = player.Character or player.CharacterAdded:Wait()
-local hum = char:WaitForChild("Humanoid")
+local hum = char:WaitForChild("Humanoid", 5)
 hum.Died:Connect(function()
 ActUselessStop = true
 end)
@@ -2637,7 +2637,7 @@ end
 
 function Death()
 DestroyGuiA()
-local h=game.Players.LocalPlayer.Character:WaitForChild("Humanoid"); h.WalkSpeed=0; h.JumpPower=0
+local h=game.Players.LocalPlayer.Character:WaitForChild("Humanoid", 5); h.WalkSpeed=0; h.JumpPower=0
 ActUseless(false)
 ActHitbox(false)
 ActMinosPrimeM(false)
@@ -2654,8 +2654,8 @@ local function StopFling()
 local Players = game:GetService("Players")
 local L = Players.LocalPlayer
 local c = L.Character or L.CharacterAdded:Wait()
-local hum = c:WaitForChild("Humanoid")
-local hrp = c:WaitForChild("HumanoidRootPart")
+local hum = c:WaitForChild("Humanoid", 5)
+local hrp = c:WaitForChild("HumanoidRootPart", 5)
 hum.PlatformStand = true
 hrp.Velocity = Vector3.zero
 hrp.RotVelocity = Vector3.zero
@@ -2703,7 +2703,7 @@ gui.Position = UDim2.new(0, props.Pos[1], 0, props.Pos[2])
 gui.BackgroundColor3 = Color3.fromRGB(unpack(props.BackgroundColor or {255, 255, 255}))
 gui.BackgroundTransparency = tonumber(props.BackgroundTransparency) or 0
 gui.BorderSizePixel = 0
-gui.Parent = props.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui")
+gui.Parent = props.Parent or game.Players.LocalPlayer:WaitForChild("PlayerGui", 5)
 if gui:IsA("TextLabel") or gui:IsA("TextButton") or gui:IsA("TextBox") then
 gui.Text = props.Text or ""
 gui.Font = Enum.Font.Arcade
@@ -3009,7 +3009,7 @@ AButton.MouseButton1Click:Connect(GuiToggle)
 
 local Remotes = {
 ["Killstreak"] = game.ReplicatedStorage:WaitForChild("KSHit"),
-["Default"] = game.ReplicatedStorage:WaitForChild("GeneralHit")
+["Default"] = game.ReplicatedStorage:WaitForChild("GeneralHit", 5)
 }
 
 local function GetGloveRemote()
@@ -3047,7 +3047,7 @@ end
 local function CreateHitbox(size, offset, duration)
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local root = character:WaitForChild("HumanoidRootPart")
+local root = character:WaitForChild("HumanoidRootPart", 5)
 local hitRemote = GetGloveRemote()
 local part = Instance.new("Part")
 part.Name = "HitboxVisual"
@@ -3070,7 +3070,7 @@ if touchingPlayer and touchingPlayer ~= player and not hitPlayers[touchingPlayer
 hitPlayers[touchingPlayer] = true
 local targetTorso = touchingPlayer.Character and (touchingPlayer.Character:FindFirstChild("Torso") or touchingPlayer.Character:FindFirstChild("UpperTorso"))
 if targetTorso then
-hitRemote:FireServer(targetTorso)
+pcall(function() hitRemote:FireServer(targetTorso) end)
 end
 end
 end)
@@ -3084,7 +3084,7 @@ end
 do
 local L = game.Players.LocalPlayer
 local C = L.Character or L.CharacterAdded:Wait()
-local humanoidRootPart = C:WaitForChild("HumanoidRootPart")
+local humanoidRootPart = C:WaitForChild("HumanoidRootPart", 5)
 
 local function PlayS(id, loudness)
 local sound = Instance.new("Sound")
@@ -3104,9 +3104,9 @@ local loop, anim, track, tween
 local didJump = false
 local function JumpFx()
 PlayS(139270438752699, 1.5)
-game:GetService("ReplicatedStorage").Events.Silly:FireServer("jump")
-game:GetService("ReplicatedStorage").Events.Silly:FireServer("jump")
-game:GetService("ReplicatedStorage").Events.Silly:FireServer("jump")
+pcall(function() game:GetService("ReplicatedStorage").Events.Silly:FireServer("jump") end)
+pcall(function() game:GetService("ReplicatedStorage").Events.Silly:FireServer("jump") end)
+pcall(function() game:GetService("ReplicatedStorage").Events.Silly:FireServer("jump") end)
 end
 local function ActSuperJump(status)
 if loop then
@@ -3257,8 +3257,8 @@ end
 local function PunchT()
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local humanoid = character:WaitForChild("Humanoid")
-local animator = humanoid:WaitForChild("Animator")
+local humanoid = character:WaitForChild("Humanoid", 5)
+local animator = humanoid:WaitForChild("Animator", 5)
 local animLeftId = "rbxassetid://109511274923523"
 local animRightId = "rbxassetid://133068451086106"
 local leftArm = character:FindFirstChild("LeftUpperArm") or character:FindFirstChild("Left Arm")
@@ -3327,7 +3327,7 @@ local function OverHeadTp()
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local hrp = character:WaitForChild("HumanoidRootPart")
+local hrp = character:WaitForChild("HumanoidRootPart", 5)
 
 local function getClosestInFront()
 local forward = hrp.CFrame.LookVector
@@ -3367,14 +3367,14 @@ end
 local function PlaySE(N, times)
 for _ = 1, times do
 coroutine.wrap(function()
-game:GetService("ReplicatedStorage"):WaitForChild("PlaySoundRemote"):InvokeServer(N,game:GetService("Players").LocalPlayer.Character:FindFirstChild("Torso") or game:GetService("Players").LocalPlayer.Character:FindFirstChild("UpperTorso"))
+pcall(function() game:GetService("ReplicatedStorage"):WaitForChild("PlaySoundRemote", 5):InvokeServer(N,game:GetService("Players").LocalPlayer.Character:FindFirstChild("Torso") or game:GetService("Players").LocalPlayer.Character:FindFirstChild("UpperTorso")) end)
 end)()
 end
 end
 
 local function OverheadSfx()
 local hrp = game.Players.LocalPlayer.Character or game.Players.LocalPlayer.CharacterAdded:Wait()
-hrp = hrp:WaitForChild("HumanoidRootPart")
+hrp = hrp:WaitForChild("HumanoidRootPart", 5)
 local function PlayS(id, loudness)
 local sound = Instance.new("Sound")
 sound.SoundId = "rbxassetid://" .. id
@@ -3387,8 +3387,8 @@ end)
 end
 PlayS(75233844730127, 1)
 wait(0.1)
-game:GetService("ReplicatedStorage").slapstick:FireServer("fullcharged")
-game:GetService("ReplicatedStorage").slapstick:FireServer("fullcharged")
+pcall(function() game:GetService("ReplicatedStorage").slapstick:FireServer("fullcharged") end)
+pcall(function() game:GetService("ReplicatedStorage").slapstick:FireServer("fullcharged") end)
 PlayS(18694755502, 0.7)
 end
 local function BlueFlash()
@@ -3396,7 +3396,7 @@ local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local player = Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local hrp = character:WaitForChild("HumanoidRootPart")
+local hrp = character:WaitForChild("HumanoidRootPart", 5)
 local gui = Instance.new("BillboardGui")
 gui.Size = UDim2.new(5, 0, 5, 0)
 gui.Adornee = hrp
@@ -3431,7 +3431,7 @@ local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local player = Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local humanoid = character:WaitForChild("Humanoid")
+local humanoid = character:WaitForChild("Humanoid", 5)
 local anim = Instance.new("Animation")
 anim.AnimationId = "rbxassetid://16144846625"
 local track = humanoid:LoadAnimation(anim)
@@ -3455,7 +3455,7 @@ end
 local function OverHeadSEAura()
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local root = character:WaitForChild("HumanoidRootPart")
+local root = character:WaitForChild("HumanoidRootPart", 5)
 local part = Instance.new("Part")
 part.Anchored = true
 part.CanCollide = false
@@ -3493,7 +3493,7 @@ local function OverheadStill()
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local root = character:WaitForChild("HumanoidRootPart")
+local root = character:WaitForChild("HumanoidRootPart", 5)
 local startCFrame = root.CFrame
 task.spawn(function()
 local startTime = tick()
@@ -3572,7 +3572,7 @@ local function Uppercut()
 local function AnimUppercut()
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local humanoid = character:WaitForChild("Humanoid")
+local humanoid = character:WaitForChild("Humanoid", 5)
 local animation = Instance.new("Animation")
 animation.AnimationId = "rbxassetid://16102907464"
 local track = humanoid:LoadAnimation(animation)
@@ -3593,7 +3593,7 @@ end
 local function Drag()
 local player = game:GetService("Players").LocalPlayer
 local char = player.Character or player.CharacterAdded:Wait()
-local hrp = char:WaitForChild("HumanoidRootPart")
+local hrp = char:WaitForChild("HumanoidRootPart", 5)
 hrp.Velocity = Vector3.new(0, 150, 0)
 end
 
@@ -3652,7 +3652,7 @@ local Debris = game:GetService("Debris")
 
 local player = Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local hrp = character:WaitForChild("HumanoidRootPart")
+local hrp = character:WaitForChild("HumanoidRootPart", 5)
 
 local function DragEffect(startPos, endPos)
 local direction = (endPos - startPos).Unit
@@ -3787,7 +3787,7 @@ local function UppercutHit()
 local function FloatAndLookUp()
 local P = game:GetService("Players").LocalPlayer
 local C = P.Character or P.CharacterAdded:Wait()
-local HRP = C:WaitForChild("HumanoidRootPart")
+local HRP = C:WaitForChild("HumanoidRootPart", 5)
 local originalCFrame = HRP.CFrame
 local floatPosition = HRP.Position
 local originalLookVector = originalCFrame.LookVector
@@ -3820,7 +3820,7 @@ local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local player = Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local hrp = character:WaitForChild("HumanoidRootPart")
+local hrp = character:WaitForChild("HumanoidRootPart", 5)
 local gui = Instance.new("BillboardGui")
 gui.Size = UDim2.new(5, 0, 5, 0)
 gui.Adornee = hrp
@@ -3854,7 +3854,7 @@ end
 local function PlaySE(N, times)
 for _ = 1, times do
 coroutine.wrap(function()
-game:GetService("ReplicatedStorage"):WaitForChild("PlaySoundRemote"):InvokeServer(N,game:GetService("Players").LocalPlayer.Character:FindFirstChild("Torso") or game:GetService("Players").LocalPlayer.Character:FindFirstChild("UpperTorso"))
+pcall(function() game:GetService("ReplicatedStorage"):WaitForChild("PlaySoundRemote", 5):InvokeServer(N,game:GetService("Players").LocalPlayer.Character:FindFirstChild("Torso") or game:GetService("Players").LocalPlayer.Character:FindFirstChild("UpperTorso")) end)
 end)()
 end
 end
@@ -3862,7 +3862,7 @@ end
 local function UppercutSfx()
 
 local hrp = game.Players.LocalPlayer.Character or game.Players.LocalPlayer.CharacterAdded:Wait()
-hrp = hrp:WaitForChild("HumanoidRootPart")
+hrp = hrp:WaitForChild("HumanoidRootPart", 5)
 local function PlayS(id, loudness)
 local sound = Instance.new("Sound")
 sound.SoundId = "rbxassetid://" .. id
@@ -3877,8 +3877,8 @@ PlayS(75233844730127, 1)
 PlayS(96076010230734, 2)
 end
 
-game:GetService("ReplicatedStorage").slapstick:FireServer("fullcharged")
-game:GetService("ReplicatedStorage").slapstick:FireServer("fullcharged")
+pcall(function() game:GetService("ReplicatedStorage").slapstick:FireServer("fullcharged") end)
+pcall(function() game:GetService("ReplicatedStorage").slapstick:FireServer("fullcharged") end)
 coroutine.wrap(BlueFlash)()
 coroutine.wrap(UppercutSfx)()
 coroutine.wrap(AnimUppercut)()
@@ -3890,7 +3890,7 @@ coroutine.wrap(UppercutHit)()
 wait(0.4)
 local P = game:GetService("Players").LocalPlayer
 local C = P.Character or P.CharacterAdded:Wait()
-local H = C:WaitForChild("Humanoid")
+local H = C:WaitForChild("Humanoid", 5)
 coroutine.wrap(StopFling)()
 coroutine.wrap(Drag)()
 wait(0.75)
@@ -3901,8 +3901,8 @@ local function DieAbility()
 local players = game:GetService("Players")
 local player = players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local hrp = character:WaitForChild("HumanoidRootPart")
-local humanoid = character:WaitForChild("Humanoid")
+local hrp = character:WaitForChild("HumanoidRootPart", 5)
+local humanoid = character:WaitForChild("Humanoid", 5)
 local TweenService = game:GetService("TweenService")
 local Debris = game:GetService("Debris")
 
@@ -3925,7 +3925,7 @@ local function DieFlash()
 local Players = game:GetService("Players")
 local tws = game:GetService("TweenService")
 local char2 = player.Character or player.CharacterAdded:Wait()
-local hrp2 = char2:WaitForChild("HumanoidRootPart")
+local hrp2 = char2:WaitForChild("HumanoidRootPart", 5)
 local gui = Instance.new("BillboardGui")
 gui.Size = UDim2.new(4, 0, 4, 0)
 gui.Adornee = hrp2
@@ -4001,8 +4001,8 @@ task.delay(0.4, function() track:Stop() end)
 end
 
 showMessage("Die!", 0)
-game:GetService("ReplicatedStorage").slapstick:FireServer("fullcharged")
-game:GetService("ReplicatedStorage").slapstick:FireServer("fullcharged")
+pcall(function() game:GetService("ReplicatedStorage").slapstick:FireServer("fullcharged") end)
+pcall(function() game:GetService("ReplicatedStorage").slapstick:FireServer("fullcharged") end)
 
 local target = getClosestEnemy()
 if not target or not target.Character then return end
@@ -4043,7 +4043,7 @@ CreateHitbox(Vector3.new(32, 26, 32), Vector3.new(0, 0, -4), 0.35)
 task.delay(0.01, function() coroutine.wrap(SpawnAfterImage)() end)
 task.delay(0.3, function() CreateHitbox(Vector3.new(32, 26, 32), Vector3.new(0, 0, -4), 0.35) end)
 
-game:GetService("ReplicatedStorage").slapstick:FireServer("fullcharged")
+pcall(function() game:GetService("ReplicatedStorage").slapstick:FireServer("fullcharged") end)
 
 if punch < 5 then
 wait(1.2)
@@ -4073,13 +4073,13 @@ end
 local function Judgement()
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-local humanoid = character:WaitForChild("Humanoid")
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart", 5)
+local humanoid = character:WaitForChild("Humanoid", 5)
 local closestPlayer = nil
 local shortestDistance = math.huge
 
-game:GetService("ReplicatedStorage").slapstick:FireServer("runeffect")
-game:GetService("ReplicatedStorage").slapstick:FireServer("cancelrun")
+pcall(function() game:GetService("ReplicatedStorage").slapstick:FireServer("runeffect") end)
+pcall(function() game:GetService("ReplicatedStorage").slapstick:FireServer("cancelrun") end)
 
 local animationIds = {
 Crouch = "rbxassetid://13675136513"
@@ -4096,7 +4096,7 @@ end
 local function PlaySE(N, times)
 for _ = 1, times do
 coroutine.wrap(function()
-game:GetService("ReplicatedStorage"):WaitForChild("PlaySoundRemote"):InvokeServer(N,game:GetService("Players").LocalPlayer.Character:FindFirstChild("Torso") or game:GetService("Players").LocalPlayer.Character:FindFirstChild("UpperTorso"))
+pcall(function() game:GetService("ReplicatedStorage"):WaitForChild("PlaySoundRemote", 5):InvokeServer(N,game:GetService("Players").LocalPlayer.Character:FindFirstChild("Torso") or game:GetService("Players").LocalPlayer.Character:FindFirstChild("UpperTorso")) end)
 end)()
 end
 end
@@ -4104,7 +4104,7 @@ end
 local function BlueWave()
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart", 5)
 local BasePosition = humanoidRootPart.Position + Vector3.new(0, 2, 0)
 local SWB = Instance.new("MeshPart")
 SWB.MeshId = "rbxassetid://12756704717"
@@ -4133,7 +4133,7 @@ local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local player = Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local hrp = character:WaitForChild("HumanoidRootPart")
+local hrp = character:WaitForChild("HumanoidRootPart", 5)
 local gui = Instance.new("BillboardGui")
 gui.Size = UDim2.new(5, 0, 5, 0)
 gui.Adornee = hrp
@@ -4189,7 +4189,7 @@ local function PlayS(id, loudness)
 local player = game.Players.LocalPlayer
 local sound = Instance.new("Sound")
 sound.SoundId = "rbxassetid://" .. id
-sound.Parent = player.Character:WaitForChild("HumanoidRootPart")
+sound.Parent = player.Character:WaitForChild("HumanoidRootPart", 5)
 sound.Volume = loudness
 sound:Play()
 sound.Ended:Connect(function()
@@ -4209,7 +4209,7 @@ PlayS(7007956313, 2)
 end
 
 local function Flash()
-game:GetService("ReplicatedStorage").slapstick:FireServer("fullcharged")
+pcall(function() game:GetService("ReplicatedStorage").slapstick:FireServer("fullcharged") end)
 end
 
 local function FC()
@@ -4230,8 +4230,8 @@ end
 
 local function Banggg()
 wait(0.05)
-game:GetService("ReplicatedStorage").RetroAbility:FireServer("Bomb")
-local bvhrp = character:WaitForChild("HumanoidRootPart")
+pcall(function() game:GetService("ReplicatedStorage").RetroAbility:FireServer("Bomb") end)
+local bvhrp = character:WaitForChild("HumanoidRootPart", 5)
 local bv3 = bvhrp:FindFirstChild("BodyVelocity") or bvhrp:WaitForChild("BodyVelocity", 3)
 if bv3 then bv3:Destroy() end
 end
@@ -4239,7 +4239,7 @@ end
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local hrp = character:WaitForChild("HumanoidRootPart")
+local hrp = character:WaitForChild("HumanoidRootPart", 5)
 local TweenService = game:GetService("TweenService")
 local Debris = game:GetService("Debris")
 local function DragEffect(startPos, endPos)
@@ -4337,7 +4337,7 @@ local function LookThenTpUpward()
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local hrp = character:WaitForChild("HumanoidRootPart")
+local hrp = character:WaitForChild("HumanoidRootPart", 5)
 local function getClosestInFront()
 local forward = hrp.CFrame.LookVector
 local origin = hrp.Position
@@ -4407,17 +4407,17 @@ end
 end
 end
 
-game.Players.LocalPlayer.Character:WaitForChild("Humanoid").WalkSpeed = 0
+game.Players.LocalPlayer.Character:WaitForChild("Humanoid", 5).WalkSpeed = 0
 coroutine.wrap(LookThenTpUpward)()
 coroutine.wrap(JudgementS)()
 coroutine.wrap(Dialogue)()
 coroutine.wrap(JudgementAN)()
 wait(0.4)
 Flash()
-game:GetService("ReplicatedStorage").slapstick:FireServer("dash")
+pcall(function() game:GetService("ReplicatedStorage").slapstick:FireServer("dash") end)
 wait(0.8)
 coroutine.wrap(YellowFlash)()
-game:GetService("ReplicatedStorage").Prop:FireServer()
+pcall(function() game:GetService("ReplicatedStorage").Prop:FireServer() end)
 wait(0.2)
 animations.Crouch:Stop()
 coroutine.wrap(BlueP2)()
@@ -4428,10 +4428,10 @@ CreateHitbox(Vector3.new(38, 38, 38), Vector3.new(0, 0, -2), 0.4)
 task.delay(0.01, function() coroutine.wrap(SpawnAfterImage)() end)
 task.delay(0.3, function() CreateHitbox(Vector3.new(38, 38, 38), Vector3.new(0, 0, -2), 0.4) end)
 wait(0.7)
-game.Players.LocalPlayer.Character:WaitForChild("Humanoid").WalkSpeed = 25
+game.Players.LocalPlayer.Character:WaitForChild("Humanoid", 5).WalkSpeed = 25
 local P = game:GetService("Players").LocalPlayer
 local C = P.Character or P.CharacterAdded:Wait()
-local H = C:WaitForChild("Humanoid")
+local H = C:WaitForChild("Humanoid", 5)
 coroutine.wrap(StopFling)()
 end
 
@@ -4441,8 +4441,8 @@ local players = game:GetService("Players")
 local runService = game:GetService("RunService")
 local player = players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-local humanoid = character:WaitForChild("Humanoid")
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart", 5)
+local humanoid = character:WaitForChild("Humanoid", 5)
 
 local animationIds = {
 Dropkick = "rbxassetid://122236786027040",
@@ -4472,7 +4472,7 @@ local function FloatThenTpToSurface()
 local runService = game:GetService("RunService")
 local player = game.Players.LocalPlayer
 local char = player.Character or player.CharacterAdded:Wait()
-local hrp = char:WaitForChild("HumanoidRootPart")
+local hrp = char:WaitForChild("HumanoidRootPart", 5)
 
 local originalCF = hrp.CFrame
 local originalRot = originalCF - originalCF.Position
@@ -4503,7 +4503,7 @@ end
 local function ShockWave()
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart", 5)
 local BasePosition = humanoidRootPart.Position + Vector3.new(0, 2, 0)
 local SWD = Instance.new("Part")
 SWD.Size = Vector3.new(10,1,10)
@@ -4597,7 +4597,7 @@ end
 local function Gas()
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart", 5)
 local count = math.random(3, 7)
 
 for i = 1, count do
@@ -4637,7 +4637,7 @@ end
 local function ParticleS()
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart", 5)
 local spawnAmount = math.random(3, 10)
 for _ = 1, spawnAmount do
 local PTCL = Instance.new("MeshPart")
@@ -4688,7 +4688,7 @@ end
 local function Aura()
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart", 5)
 local function createAura()
 local auraPart = Instance.new("Part")
 auraPart.Size = Vector3.new(1, 1, 1)
@@ -4727,8 +4727,8 @@ end
 local function createTrail()
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-local Head = character:WaitForChild("Head")
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart", 5)
+local Head = character:WaitForChild("Head", 5)
 local trail = Instance.new("Trail")
 trail.Color = ColorSequence.new(Color3.fromRGB(255,255,255))
 trail.Lifetime = 0.5
@@ -4748,7 +4748,7 @@ end
 local function BlueWave()
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart", 5)
 local BasePosition = humanoidRootPart.Position + Vector3.new(0, 2, 0)
 local SWB = Instance.new("MeshPart")
 SWB.MeshId = "rbxassetid://12756704717"
@@ -4798,7 +4798,7 @@ local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local player = Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local hrp = character:WaitForChild("HumanoidRootPart")
+local hrp = character:WaitForChild("HumanoidRootPart", 5)
 local gui = Instance.new("BillboardGui")
 gui.Size = UDim2.new(5, 0, 5, 0)
 gui.Adornee = hrp
@@ -4831,16 +4831,16 @@ end
 
 local function impactSfx()
 wait(0.3)
-game:GetService("ReplicatedStorage").Events.Silly:FireServer("jump")
-game:GetService("ReplicatedStorage").Events.Silly:FireServer("jump")
-game:GetService("ReplicatedStorage").Events.Silly:FireServer("jump")
-game:GetService("ReplicatedStorage").Events.Silly:FireServer("jump")
-game:GetService("ReplicatedStorage").Events.Silly:FireServer("jump")
-game:GetService("ReplicatedStorage").RetroAbility:FireServer("Bomb")
+pcall(function() game:GetService("ReplicatedStorage").Events.Silly:FireServer("jump") end)
+pcall(function() game:GetService("ReplicatedStorage").Events.Silly:FireServer("jump") end)
+pcall(function() game:GetService("ReplicatedStorage").Events.Silly:FireServer("jump") end)
+pcall(function() game:GetService("ReplicatedStorage").Events.Silly:FireServer("jump") end)
+pcall(function() game:GetService("ReplicatedStorage").Events.Silly:FireServer("jump") end)
+pcall(function() game:GetService("ReplicatedStorage").RetroAbility:FireServer("Bomb") end)
 local players = game:GetService("Players")
 local player = players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local hrp = character:WaitForChild("HumanoidRootPart")
+local hrp = character:WaitForChild("HumanoidRootPart", 5)
 local bv4 = hrp:FindFirstChild("BodyVelocity") or hrp:WaitForChild("BodyVelocity", 3)
 if bv4 then bv4:Destroy() end
 end
@@ -4848,13 +4848,13 @@ end
 local function PlaySE(N, times)
 for _ = 1, times do
 coroutine.wrap(function()
-game:GetService("ReplicatedStorage"):WaitForChild("PlaySoundRemote"):InvokeServer(N,game:GetService("Players").LocalPlayer.Character:FindFirstChild("Torso") or game:GetService("Players").LocalPlayer.Character:FindFirstChild("UpperTorso"))
+pcall(function() game:GetService("ReplicatedStorage"):WaitForChild("PlaySoundRemote", 5):InvokeServer(N,game:GetService("Players").LocalPlayer.Character:FindFirstChild("Torso") or game:GetService("Players").LocalPlayer.Character:FindFirstChild("UpperTorso")) end)
 end)()
 end
 end
 
 local hrp = game.Players.LocalPlayer.Character or game.Players.LocalPlayer.CharacterAdded:Wait()
-hrp = hrp:WaitForChild("HumanoidRootPart")
+hrp = hrp:WaitForChild("HumanoidRootPart", 5)
 local function PlayS(id, loudness)
 local sound = Instance.new("Sound")
 sound.SoundId = "rbxassetid://" .. id
@@ -4880,8 +4880,8 @@ if not _thyEndSilent then showMessage("Crush!", 0) end
 end
 
 local function StartCrush()
-game:GetService("ReplicatedStorage").slapstick:FireServer("fullcharged")
-game:GetService("ReplicatedStorage").slapstick:FireServer("fullcharged")
+pcall(function() game:GetService("ReplicatedStorage").slapstick:FireServer("fullcharged") end)
+pcall(function() game:GetService("ReplicatedStorage").slapstick:FireServer("fullcharged") end)
 coroutine.wrap(Dialogue)()
 coroutine.wrap(BlueFlash)()
 coroutine.wrap(FloatThenTpToSurface)()
@@ -4905,7 +4905,7 @@ task.delay(0.3, function() CreateHitbox(Vector3.new(44, 28, 44), Vector3.new(0, 
 wait(0.5)
 local P = game:GetService("Players").LocalPlayer
 local C = P.Character or P.CharacterAdded:Wait()
-local H = C:WaitForChild("Humanoid")
+local H = C:WaitForChild("Humanoid", 5)
 coroutine.wrap(StopFling)()
 end
 StartCrush()
@@ -4916,19 +4916,20 @@ local abilityUIS = game:GetService("UserInputService")
 
 local function PunchAbility()
 	local hrpChar = abilityPlayer.Character or abilityPlayer.CharacterAdded:Wait()
-	local phrp = hrpChar:WaitForChild("HumanoidRootPart")
+	local phrp = hrpChar:WaitForChild("HumanoidRootPart", 5)
 	local snd = Instance.new("Sound")
 	snd.SoundId = "rbxassetid://18694755502"
 	snd.Volume = 1
 	snd.Parent = phrp
 	snd:Play()
 	snd.Ended:Connect(function() snd:Destroy() end)
+	CreateHitbox(Vector3.new(20, 10, 20), Vector3.new(0, 0, -5), 0.35)
 	coroutine.wrap(PunchT)()
 end
 
 local function JudgementAbilityWrapped()
 	local jchar = abilityPlayer.Character or abilityPlayer.CharacterAdded:Wait()
-	local jhum = jchar:WaitForChild("Humanoid")
+	local jhum = jchar:WaitForChild("Humanoid", 5)
 	if jhum.FloorMaterial ~= Enum.Material.Air then
 		Judgement()
 	end
@@ -5045,14 +5046,17 @@ for idx, def in ipairs(abilityDefs) do
 	keyLabel.TextTransparency = 0.1
 	keyLabel.Parent = frame
 
+
+
 	local cdOverlay = Instance.new("Frame")
 	cdOverlay.Name = "CooldownOverlay"
-	cdOverlay.Size = UDim2.new(1, 0, 0, 0)
-	cdOverlay.Position = UDim2.new(0, 0, 1, 0)
+	cdOverlay.Size = UDim2.new(1, 0, 1, 0)
+	cdOverlay.Position = UDim2.new(0, 0, 0, 0)
 	cdOverlay.BackgroundColor3 = RED_COOLDOWN
 	cdOverlay.BackgroundTransparency = 0.15
 	cdOverlay.BorderSizePixel = 0
 	cdOverlay.ZIndex = 3
+	cdOverlay.Visible = false
 	local cdCorner = Instance.new("UICorner")
 	cdCorner.CornerRadius = UDim.new(0, 8)
 	cdCorner.Parent = cdOverlay
@@ -5096,8 +5100,7 @@ for idx, def in ipairs(abilityDefs) do
 		local totalCd = capturedDef.cd
 		local timeLeft = totalCd
 		capturedFrame.BackgroundColor3 = RED_COOLDOWN
-		capturedLabels.cdOverlay.Size = UDim2.new(1, 0, 1, 0)
-		capturedLabels.cdOverlay.Position = UDim2.new(0, 0, 0, 0)
+		capturedLabels.cdOverlay.Visible = true
 		capturedLabels.cdLabel.Visible = true
 		task.spawn(function()
 			local lastSec = -1
@@ -5107,13 +5110,10 @@ for idx, def in ipairs(abilityDefs) do
 					capturedLabels.cdLabel.Text = tostring(secs)
 					lastSec = secs
 				end
-				local progress = timeLeft / totalCd
-				capturedLabels.cdOverlay.Size = UDim2.new(1, 0, progress, 0)
-				capturedLabels.cdOverlay.Position = UDim2.new(0, 0, 0, 0)
 				task.wait(0.1)
 				timeLeft = timeLeft - 0.1
 			end
-			capturedLabels.cdOverlay.Size = UDim2.new(1, 0, 0, 0)
+			capturedLabels.cdOverlay.Visible = false
 			capturedLabels.cdLabel.Visible = false
 			capturedLabels.cdLabel.Text = ""
 			capturedFrame.BackgroundColor3 = BLACK_READY
@@ -5194,4 +5194,4 @@ end
 end
 end
 
-Configuring()
+pcall(Configuring)
